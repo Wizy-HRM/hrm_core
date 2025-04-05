@@ -1,5 +1,5 @@
-import { getAllJobs as prismaAdapter } from "../../prisma/jobsListing/jobRepositoryPrisma";
-import { getAllJobs as getAllJobsUsecase } from "../../../core/shared/usecases/getAllJobs";
+import { getAllJobs as prismaAdapter } from "../../../prisma/jobsListing/jobRepositoryPrisma";
+import { getAllJobs as getAllJobsUsecase } from "../../../../core/shared/usecases/getAllJobs";
 import { Request, Response } from "express";
 
 const usecase = getAllJobsUsecase(prismaAdapter);
