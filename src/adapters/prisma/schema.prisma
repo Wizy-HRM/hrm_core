@@ -29,7 +29,7 @@ model User {
 model Company {
   id             Int              @id @default(autoincrement())
   email          String           @unique
-  password       String
+  password       String?
   salt           String?
   tenantId       String?
   location       Json?
@@ -40,6 +40,7 @@ model Company {
   forgotPasswordTokenExpired    DateTime?
   platform        PlatFormStatus  @default(JOBLISTING)
   jobs           JobListing[]
+  registeredBy   RegisterByPlatform? @default(JOBLISTING)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 }
@@ -135,5 +136,10 @@ enum UserStatus {
 
 enum PlatFormStatus {
   HRM
+  JOBLISTING
+}
+
+enum RegisterByPlatform {
+  GOOGLE
   JOBLISTING
 }

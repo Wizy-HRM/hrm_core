@@ -7,6 +7,9 @@ import { createNewAdd } from "../../../../core/company/usecases/createNewAdd";
 import { PrismaAdapter } from "../../../prisma";
 import { getCompanyDetailsUser } from "../../../../core/company/usecases/getCompany";
 import { listCompanies } from "../../../../core/company/usecases/listCompnies";
+import axios from "axios";
+import { searchCompanyByEmail } from "../../../../core/company/usecases/searchCompanyByEmail";
+import { registerGoogleCompany } from "../../../../core/company/usecases/registerGoogleCompany";
 
 export const registerCompanyController = async (
   req: Request,
@@ -58,6 +61,62 @@ export const LoginCompanyController = async (req: Request, res: Response) => {
     res.status(400).json({
       error: errorMessage.message,
     });
+  }
+};
+
+export const loginCompanyWithGoogle = async (req: Request, res: Response) => {
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email`;
+  res.redirect(url);
+};
+
+export const loginCompanyWithGoogleRedirect = async (
+  req: Request,
+  res: Response
+) => {
+  const { code } = req.query;
+
+  try {
+    const { data } = await axios.post("https://oauth2.googleapis.com/token", {
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      code,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      grant_type: "authorization_code",
+    });
+
+    const { access_token, id_token } = data;
+    const { data: profile } = await axios.get(
+      "https://www.googleapis.com/oauth2/v1/userinfo",
+      {
+        headers: { Authorization: `Bearer ${access_token}` },
+      }
+    );
+
+    const findCompany = await searchCompanyByEmail(
+      profile.email,
+      PrismaAdapter.default
+    );
+
+    if (!findCompany) {
+      await registerGoogleCompany(
+        {
+          email: profile.email!,
+          info: null,
+          location: {},
+          tenantId: null,
+          platform: "JOBLISTING",
+          registeredBy: "GOOGLE",
+        },
+        PrismaAdapter.default
+      );
+    }
+
+    console.log(profile);
+
+    res.redirect("/");
+  } catch (error: any) {
+    console.error("Error:", error.response.data.error);
+    res.redirect("/login");
   }
 };
 

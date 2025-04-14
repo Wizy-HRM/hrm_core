@@ -28,6 +28,24 @@ export default {
     });
   },
 
+  async registerGoogleCompany(
+    company: Pick<
+      Company,
+      "email" | "info" | "location" | "platform" | "tenantId" | "registeredBy"
+    >
+  ): Promise<Company> {
+    return await prisma.prisma.company.create({
+      data: {
+        email: company.email,
+        info: company.info || {},
+        location: company.location || {},
+        tenantId: company.tenantId || null,
+        platform: company.platform,
+        registeredBy: company.registeredBy,
+      },
+    });
+  },
+
   async getAllJobs(): Promise<JobListing[]> {
     return await prisma.prisma.jobListing.findMany({
       include: {
@@ -108,5 +126,15 @@ export default {
     });
 
     return companies;
+  },
+
+  async searchCompanyByEmail(email: string): Promise<Company | null> {
+    const company = await prisma.prisma.company.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (!company) return null;
+    return company;
   },
 };

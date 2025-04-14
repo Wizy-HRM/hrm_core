@@ -141,6 +141,7 @@ exports.Prisma.CompanyScalarFieldEnum = {
   forgotPasswordToken: 'forgotPasswordToken',
   forgotPasswordTokenExpired: 'forgotPasswordTokenExpired',
   platform: 'platform',
+  registeredBy: 'registeredBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -203,6 +204,11 @@ exports.Prisma.NullsOrder = {
 };
 exports.PlatFormStatus = exports.$Enums.PlatFormStatus = {
   HRM: 'HRM',
+  JOBLISTING: 'JOBLISTING'
+};
+
+exports.RegisterByPlatform = exports.$Enums.RegisterByPlatform = {
+  GOOGLE: 'GOOGLE',
   JOBLISTING: 'JOBLISTING'
 };
 

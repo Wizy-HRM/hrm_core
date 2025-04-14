@@ -109,6 +109,14 @@ export const PlatFormStatus: {
 
 export type PlatFormStatus = (typeof PlatFormStatus)[keyof typeof PlatFormStatus]
 
+
+export const RegisterByPlatform: {
+  GOOGLE: 'GOOGLE',
+  JOBLISTING: 'JOBLISTING'
+};
+
+export type RegisterByPlatform = (typeof RegisterByPlatform)[keyof typeof RegisterByPlatform]
+
 }
 
 export type EmploymentType = $Enums.EmploymentType
@@ -138,6 +146,10 @@ export const UserStatus: typeof $Enums.UserStatus
 export type PlatFormStatus = $Enums.PlatFormStatus
 
 export const PlatFormStatus: typeof $Enums.PlatFormStatus
+
+export type RegisterByPlatform = $Enums.RegisterByPlatform
+
+export const RegisterByPlatform: typeof $Enums.RegisterByPlatform
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2509,6 +2521,7 @@ export namespace Prisma {
     forgotPasswordToken: Date | null
     forgotPasswordTokenExpired: Date | null
     platform: $Enums.PlatFormStatus | null
+    registeredBy: $Enums.RegisterByPlatform | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2524,6 +2537,7 @@ export namespace Prisma {
     forgotPasswordToken: Date | null
     forgotPasswordTokenExpired: Date | null
     platform: $Enums.PlatFormStatus | null
+    registeredBy: $Enums.RegisterByPlatform | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2541,6 +2555,7 @@ export namespace Prisma {
     forgotPasswordToken: number
     forgotPasswordTokenExpired: number
     platform: number
+    registeredBy: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2566,6 +2581,7 @@ export namespace Prisma {
     forgotPasswordToken?: true
     forgotPasswordTokenExpired?: true
     platform?: true
+    registeredBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2581,6 +2597,7 @@ export namespace Prisma {
     forgotPasswordToken?: true
     forgotPasswordTokenExpired?: true
     platform?: true
+    registeredBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2598,6 +2615,7 @@ export namespace Prisma {
     forgotPasswordToken?: true
     forgotPasswordTokenExpired?: true
     platform?: true
+    registeredBy?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2692,7 +2710,7 @@ export namespace Prisma {
   export type CompanyGroupByOutputType = {
     id: number
     email: string
-    password: string
+    password: string | null
     salt: string | null
     tenantId: string | null
     location: JsonValue | null
@@ -2702,6 +2720,7 @@ export namespace Prisma {
     forgotPasswordToken: Date | null
     forgotPasswordTokenExpired: Date | null
     platform: $Enums.PlatFormStatus
+    registeredBy: $Enums.RegisterByPlatform | null
     createdAt: Date
     updatedAt: Date
     _count: CompanyCountAggregateOutputType | null
@@ -2738,6 +2757,7 @@ export namespace Prisma {
     forgotPasswordToken?: boolean
     forgotPasswordTokenExpired?: boolean
     platform?: boolean
+    registeredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     jobs?: boolean | Company$jobsArgs<ExtArgs>
@@ -2757,6 +2777,7 @@ export namespace Prisma {
     forgotPasswordToken?: boolean
     forgotPasswordTokenExpired?: boolean
     platform?: boolean
+    registeredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["company"]>
@@ -2774,6 +2795,7 @@ export namespace Prisma {
     forgotPasswordToken?: boolean
     forgotPasswordTokenExpired?: boolean
     platform?: boolean
+    registeredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["company"]>
@@ -2791,11 +2813,12 @@ export namespace Prisma {
     forgotPasswordToken?: boolean
     forgotPasswordTokenExpired?: boolean
     platform?: boolean
+    registeredBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "salt" | "tenantId" | "location" | "info" | "registerToken" | "registerTokenExpired" | "forgotPasswordToken" | "forgotPasswordTokenExpired" | "platform" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "salt" | "tenantId" | "location" | "info" | "registerToken" | "registerTokenExpired" | "forgotPasswordToken" | "forgotPasswordTokenExpired" | "platform" | "registeredBy" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     jobs?: boolean | Company$jobsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
@@ -2811,7 +2834,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       email: string
-      password: string
+      password: string | null
       salt: string | null
       tenantId: string | null
       location: Prisma.JsonValue | null
@@ -2821,6 +2844,7 @@ export namespace Prisma {
       forgotPasswordToken: Date | null
       forgotPasswordTokenExpired: Date | null
       platform: $Enums.PlatFormStatus
+      registeredBy: $Enums.RegisterByPlatform | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["company"]>
@@ -3259,6 +3283,7 @@ export namespace Prisma {
     readonly forgotPasswordToken: FieldRef<"Company", 'DateTime'>
     readonly forgotPasswordTokenExpired: FieldRef<"Company", 'DateTime'>
     readonly platform: FieldRef<"Company", 'PlatFormStatus'>
+    readonly registeredBy: FieldRef<"Company", 'RegisterByPlatform'>
     readonly createdAt: FieldRef<"Company", 'DateTime'>
     readonly updatedAt: FieldRef<"Company", 'DateTime'>
   }
@@ -6153,6 +6178,7 @@ export namespace Prisma {
     forgotPasswordToken: 'forgotPasswordToken',
     forgotPasswordTokenExpired: 'forgotPasswordTokenExpired',
     platform: 'platform',
+    registeredBy: 'registeredBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6314,6 +6340,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'RegisterByPlatform'
+   */
+  export type EnumRegisterByPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RegisterByPlatform'>
+    
+
+
+  /**
+   * Reference to a field of type 'RegisterByPlatform[]'
+   */
+  export type ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RegisterByPlatform[]'>
+    
+
+
+  /**
    * Reference to a field of type 'EmploymentType'
    */
   export type EnumEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmploymentType'>
@@ -6464,7 +6504,7 @@ export namespace Prisma {
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     id?: IntFilter<"Company"> | number
     email?: StringFilter<"Company"> | string
-    password?: StringFilter<"Company"> | string
+    password?: StringNullableFilter<"Company"> | string | null
     salt?: StringNullableFilter<"Company"> | string | null
     tenantId?: StringNullableFilter<"Company"> | string | null
     location?: JsonNullableFilter<"Company">
@@ -6474,6 +6514,7 @@ export namespace Prisma {
     forgotPasswordToken?: DateTimeNullableFilter<"Company"> | Date | string | null
     forgotPasswordTokenExpired?: DateTimeNullableFilter<"Company"> | Date | string | null
     platform?: EnumPlatFormStatusFilter<"Company"> | $Enums.PlatFormStatus
+    registeredBy?: EnumRegisterByPlatformNullableFilter<"Company"> | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     jobs?: JobListingListRelationFilter
@@ -6482,7 +6523,7 @@ export namespace Prisma {
   export type CompanyOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     salt?: SortOrderInput | SortOrder
     tenantId?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
@@ -6492,6 +6533,7 @@ export namespace Prisma {
     forgotPasswordToken?: SortOrderInput | SortOrder
     forgotPasswordTokenExpired?: SortOrderInput | SortOrder
     platform?: SortOrder
+    registeredBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     jobs?: JobListingOrderByRelationAggregateInput
@@ -6503,7 +6545,7 @@ export namespace Prisma {
     AND?: CompanyWhereInput | CompanyWhereInput[]
     OR?: CompanyWhereInput[]
     NOT?: CompanyWhereInput | CompanyWhereInput[]
-    password?: StringFilter<"Company"> | string
+    password?: StringNullableFilter<"Company"> | string | null
     salt?: StringNullableFilter<"Company"> | string | null
     tenantId?: StringNullableFilter<"Company"> | string | null
     location?: JsonNullableFilter<"Company">
@@ -6513,6 +6555,7 @@ export namespace Prisma {
     forgotPasswordToken?: DateTimeNullableFilter<"Company"> | Date | string | null
     forgotPasswordTokenExpired?: DateTimeNullableFilter<"Company"> | Date | string | null
     platform?: EnumPlatFormStatusFilter<"Company"> | $Enums.PlatFormStatus
+    registeredBy?: EnumRegisterByPlatformNullableFilter<"Company"> | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     jobs?: JobListingListRelationFilter
@@ -6521,7 +6564,7 @@ export namespace Prisma {
   export type CompanyOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     salt?: SortOrderInput | SortOrder
     tenantId?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
@@ -6531,6 +6574,7 @@ export namespace Prisma {
     forgotPasswordToken?: SortOrderInput | SortOrder
     forgotPasswordTokenExpired?: SortOrderInput | SortOrder
     platform?: SortOrder
+    registeredBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CompanyCountOrderByAggregateInput
@@ -6546,7 +6590,7 @@ export namespace Prisma {
     NOT?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Company"> | number
     email?: StringWithAggregatesFilter<"Company"> | string
-    password?: StringWithAggregatesFilter<"Company"> | string
+    password?: StringNullableWithAggregatesFilter<"Company"> | string | null
     salt?: StringNullableWithAggregatesFilter<"Company"> | string | null
     tenantId?: StringNullableWithAggregatesFilter<"Company"> | string | null
     location?: JsonNullableWithAggregatesFilter<"Company">
@@ -6556,6 +6600,7 @@ export namespace Prisma {
     forgotPasswordToken?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
     forgotPasswordTokenExpired?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
     platform?: EnumPlatFormStatusWithAggregatesFilter<"Company"> | $Enums.PlatFormStatus
+    registeredBy?: EnumRegisterByPlatformNullableWithAggregatesFilter<"Company"> | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
   }
@@ -6835,7 +6880,7 @@ export namespace Prisma {
 
   export type CompanyCreateInput = {
     email: string
-    password: string
+    password?: string | null
     salt?: string | null
     tenantId?: string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6845,6 +6890,7 @@ export namespace Prisma {
     forgotPasswordToken?: Date | string | null
     forgotPasswordTokenExpired?: Date | string | null
     platform?: $Enums.PlatFormStatus
+    registeredBy?: $Enums.RegisterByPlatform | null
     createdAt?: Date | string
     updatedAt?: Date | string
     jobs?: JobListingCreateNestedManyWithoutCompanyInput
@@ -6853,7 +6899,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateInput = {
     id?: number
     email: string
-    password: string
+    password?: string | null
     salt?: string | null
     tenantId?: string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6863,6 +6909,7 @@ export namespace Prisma {
     forgotPasswordToken?: Date | string | null
     forgotPasswordTokenExpired?: Date | string | null
     platform?: $Enums.PlatFormStatus
+    registeredBy?: $Enums.RegisterByPlatform | null
     createdAt?: Date | string
     updatedAt?: Date | string
     jobs?: JobListingUncheckedCreateNestedManyWithoutCompanyInput
@@ -6870,7 +6917,7 @@ export namespace Prisma {
 
   export type CompanyUpdateInput = {
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6880,6 +6927,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     jobs?: JobListingUpdateManyWithoutCompanyNestedInput
@@ -6888,7 +6936,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6898,6 +6946,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     jobs?: JobListingUncheckedUpdateManyWithoutCompanyNestedInput
@@ -6906,7 +6955,7 @@ export namespace Prisma {
   export type CompanyCreateManyInput = {
     id?: number
     email: string
-    password: string
+    password?: string | null
     salt?: string | null
     tenantId?: string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6916,13 +6965,14 @@ export namespace Prisma {
     forgotPasswordToken?: Date | string | null
     forgotPasswordTokenExpired?: Date | string | null
     platform?: $Enums.PlatFormStatus
+    registeredBy?: $Enums.RegisterByPlatform | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type CompanyUpdateManyMutationInput = {
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6932,6 +6982,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6939,7 +6990,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -6949,6 +7000,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7404,6 +7456,13 @@ export namespace Prisma {
     not?: NestedEnumPlatFormStatusFilter<$PrismaModel> | $Enums.PlatFormStatus
   }
 
+  export type EnumRegisterByPlatformNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.RegisterByPlatform | EnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    in?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel> | $Enums.RegisterByPlatform | null
+  }
+
   export type JobListingListRelationFilter = {
     every?: JobListingWhereInput
     some?: JobListingWhereInput
@@ -7427,6 +7486,7 @@ export namespace Prisma {
     forgotPasswordToken?: SortOrder
     forgotPasswordTokenExpired?: SortOrder
     platform?: SortOrder
+    registeredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7446,6 +7506,7 @@ export namespace Prisma {
     forgotPasswordToken?: SortOrder
     forgotPasswordTokenExpired?: SortOrder
     platform?: SortOrder
+    registeredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7461,6 +7522,7 @@ export namespace Prisma {
     forgotPasswordToken?: SortOrder
     forgotPasswordTokenExpired?: SortOrder
     platform?: SortOrder
+    registeredBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7491,6 +7553,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPlatFormStatusFilter<$PrismaModel>
     _max?: NestedEnumPlatFormStatusFilter<$PrismaModel>
+  }
+
+  export type EnumRegisterByPlatformNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RegisterByPlatform | EnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    in?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumRegisterByPlatformNullableWithAggregatesFilter<$PrismaModel> | $Enums.RegisterByPlatform | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel>
+    _max?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel>
   }
 
   export type EnumEmploymentTypeFilter<$PrismaModel = never> = {
@@ -7777,6 +7849,10 @@ export namespace Prisma {
 
   export type EnumPlatFormStatusFieldUpdateOperationsInput = {
     set?: $Enums.PlatFormStatus
+  }
+
+  export type NullableEnumRegisterByPlatformFieldUpdateOperationsInput = {
+    set?: $Enums.RegisterByPlatform | null
   }
 
   export type JobListingUpdateManyWithoutCompanyNestedInput = {
@@ -8093,6 +8169,13 @@ export namespace Prisma {
     not?: NestedEnumPlatFormStatusFilter<$PrismaModel> | $Enums.PlatFormStatus
   }
 
+  export type NestedEnumRegisterByPlatformNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.RegisterByPlatform | EnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    in?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel> | $Enums.RegisterByPlatform | null
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -8115,6 +8198,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPlatFormStatusFilter<$PrismaModel>
     _max?: NestedEnumPlatFormStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRegisterByPlatformNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RegisterByPlatform | EnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    in?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.RegisterByPlatform[] | ListEnumRegisterByPlatformFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumRegisterByPlatformNullableWithAggregatesFilter<$PrismaModel> | $Enums.RegisterByPlatform | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel>
+    _max?: NestedEnumRegisterByPlatformNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumEmploymentTypeFilter<$PrismaModel = never> = {
@@ -8365,7 +8458,7 @@ export namespace Prisma {
 
   export type CompanyCreateWithoutJobsInput = {
     email: string
-    password: string
+    password?: string | null
     salt?: string | null
     tenantId?: string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -8375,6 +8468,7 @@ export namespace Prisma {
     forgotPasswordToken?: Date | string | null
     forgotPasswordTokenExpired?: Date | string | null
     platform?: $Enums.PlatFormStatus
+    registeredBy?: $Enums.RegisterByPlatform | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8382,7 +8476,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateWithoutJobsInput = {
     id?: number
     email: string
-    password: string
+    password?: string | null
     salt?: string | null
     tenantId?: string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -8392,6 +8486,7 @@ export namespace Prisma {
     forgotPasswordToken?: Date | string | null
     forgotPasswordTokenExpired?: Date | string | null
     platform?: $Enums.PlatFormStatus
+    registeredBy?: $Enums.RegisterByPlatform | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8430,7 +8525,7 @@ export namespace Prisma {
 
   export type CompanyUpdateWithoutJobsInput = {
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -8440,6 +8535,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8447,7 +8543,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateWithoutJobsInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableJsonNullValueInput | InputJsonValue
@@ -8457,6 +8553,7 @@ export namespace Prisma {
     forgotPasswordToken?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     forgotPasswordTokenExpired?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     platform?: EnumPlatFormStatusFieldUpdateOperationsInput | $Enums.PlatFormStatus
+    registeredBy?: NullableEnumRegisterByPlatformFieldUpdateOperationsInput | $Enums.RegisterByPlatform | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
