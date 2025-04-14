@@ -1,1 +1,1 @@
-export * as prisma from "./client";
+export * as PrismaAdapter from "./prismaRepo";

@@ -4,10 +4,12 @@ import { HttpInterface } from "./types";
 import cors from "cors";
 import jobRouter from "./routes/job-routes";
 import companyRouter from "./routes/company-routes";
+import cookieParser from "cookie-parser";
 
 export default ({ config }: HttpInterface): void => {
   const app: Express = express();
 
+  app.use(cookieParser());
   app.use(
     cors({
       credentials: true,
