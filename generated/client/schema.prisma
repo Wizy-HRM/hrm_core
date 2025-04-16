@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../../../generated/client" // relative to schema.prisma
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows", "linux-musl-openssl-3.0.x"]
+  output        = "../../../generated/client" // relative to schema.prisma
 }
 
 datasource db {
@@ -17,8 +18,6 @@ datasource db {
 model User {
   id           Int              @id @default(autoincrement())
   email        String           @unique
-  password     String
-  salt         String?
   cv           String?
   personalIfo  Json?
   applications JobApplication[]
@@ -27,22 +26,18 @@ model User {
 }
 
 model Company {
-  id                         Int                 @id @default(autoincrement())
-  email                      String              @unique
-  password                   String?
-  salt                       String?
-  tenantId                   String?
-  location                   Json?
-  info                       Json?
-  registerToken              String?
-  registerTokenExpired       DateTime?
-  forgotPasswordToken        DateTime?
-  forgotPasswordTokenExpired DateTime?
-  platform                   PlatFormStatus      @default(JOBLISTING)
-  jobs                       JobListing[]
-  registeredBy               RegisterByPlatform? @default(JOBLISTING)
-  createdAt                  DateTime            @default(now())
-  updatedAt                  DateTime            @updatedAt
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  tenantId          String?
+  location          Json?
+  info              Json?
+  platform          PlatFormStatus      @default(JOBLISTING)
+  jobs              JobListing[]
+  registeredBy      RegisterByPlatform? @default(JOBLISTING)
+  loginToken        String?
+  loginTokenExpired DateTime            @default(now())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 model JobListing {

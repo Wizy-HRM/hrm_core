@@ -12,6 +12,12 @@ declare global {
       JWT_SECRET: string;
       PORT: string;
       DATABASE_URL: string;
+      MAILER_HOST: string;
+      MAILER_USER: string;
+      MAILER_PASS: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
+      GOOGLE_REDIRECT_URI: string;
       // add more environment variables and their types here
     }
   }

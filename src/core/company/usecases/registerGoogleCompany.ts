@@ -4,7 +4,14 @@ import { DatabaseAdapater } from "../../ports";
 export const registerGoogleCompany = async (
   company: Pick<
     Company,
-    "email" | "info" | "location" | "platform" | "tenantId" | "registeredBy"
+    | "email"
+    | "info"
+    | "location"
+    | "platform"
+    | "tenantId"
+    | "registeredBy"
+    | "loginToken"
+    | "loginTokenExpired"
   >,
   repo: Pick<DatabaseAdapater, "registerGoogleCompany">
 ): Promise<Company> => {

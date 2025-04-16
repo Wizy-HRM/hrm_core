@@ -1,0 +1,19 @@
+# Dockerfile.dev
+FROM node:21-alpine
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Add Prisma CLI
+RUN cd src/adapters/prisma && npx prisma generate
+
+# Auto run migration at container build (for dev only)
+RUN cd src/adapters/prisma &&npx prisma migrate dev --name init || true
+
+EXPOSE 5000

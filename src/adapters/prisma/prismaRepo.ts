@@ -16,14 +16,12 @@ export default {
     return await prisma.prisma.company.create({
       data: {
         email: company.email,
-        password: company.password,
         info: company.info || {},
         location: company.location || {},
-        salt: company.salt,
         tenantId: company.tenantId || null,
         platform: company.platform,
-        registerToken: company.registerToken,
-        registerTokenExpired: company.registerTokenExpired,
+        loginToken: company.loginToken,
+        loginTokenExpired: company.loginTokenExpired,
       },
     });
   },
@@ -31,7 +29,14 @@ export default {
   async registerGoogleCompany(
     company: Pick<
       Company,
-      "email" | "info" | "location" | "platform" | "tenantId" | "registeredBy"
+      | "email"
+      | "info"
+      | "loginToken"
+      | "loginTokenExpired"
+      | "location"
+      | "platform"
+      | "tenantId"
+      | "registeredBy"
     >
   ): Promise<Company> {
     return await prisma.prisma.company.create({
@@ -42,6 +47,8 @@ export default {
         tenantId: company.tenantId || null,
         platform: company.platform,
         registeredBy: company.registeredBy,
+        loginToken: company.loginToken,
+        loginTokenExpired: company.loginTokenExpired,
       },
     });
   },
@@ -51,12 +58,6 @@ export default {
       include: {
         company: {
           omit: {
-            password: true,
-            salt: true,
-            forgotPasswordToken: true,
-            forgotPasswordTokenExpired: true,
-            registerToken: true,
-            registerTokenExpired: true,
             tenantId: true,
           },
         },
@@ -111,12 +112,6 @@ export default {
   > {
     const companies = await prisma.prisma.company.findMany({
       omit: {
-        password: true,
-        salt: true,
-        forgotPasswordToken: true,
-        forgotPasswordTokenExpired: true,
-        registerToken: true,
-        registerTokenExpired: true,
         tenantId: true,
       },
       take: 5,
@@ -136,5 +131,31 @@ export default {
     });
     if (!company) return null;
     return company;
+  },
+
+  async validateMagicLink(token: string): Promise<Company | null> {
+    const company = await prisma.prisma.company.findFirst({
+      where: {
+        loginToken: token,
+      },
+    });
+    if (!company) return null;
+    return company;
+  },
+
+  async updateCompanyByEmail(
+    email: string,
+    loginToken: string,
+    loginTokenExpired: Date
+  ) {
+    return await prisma.prisma.company.update({
+      where: {
+        email,
+      },
+      data: {
+        loginToken,
+        loginTokenExpired,
+      },
+    });
   },
 };

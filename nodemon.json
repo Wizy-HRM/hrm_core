@@ -1,0 +1,6 @@
+{
+  "watch": ["dist"],
+  "delay": "300",
+  "ext": "js,json",
+  "legacyWatch": true
+}

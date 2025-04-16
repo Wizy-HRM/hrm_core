@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./dist/server.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
+"dev": "concurrently \"tsc --watch --preserveWatchOutput --watchFile fixedPollingInterval\" \"nodemon dist/server.js\"",
     "prisma:generate": "prisma generate --schema=src/adapters/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema=src/adapters/prisma/schema.prisma"
   },
@@ -16,6 +18,7 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.17",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
@@ -24,11 +27,13 @@
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.10.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/node": "^22.14.0",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "prisma": "^6.5.0",
     "tsx": "^4.19.3",

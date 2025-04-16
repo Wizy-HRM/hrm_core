@@ -10,38 +10,22 @@ import { listCompanies } from "../../../../core/company/usecases/listCompnies";
 import axios from "axios";
 import { searchCompanyByEmail } from "../../../../core/company/usecases/searchCompanyByEmail";
 import { registerGoogleCompany } from "../../../../core/company/usecases/registerGoogleCompany";
-
-export const registerCompanyController = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const createNewCompany = await registerCompany(
-      req.body.password,
-      PrismaAdapter.default,
-      {
-        ...req.body,
-      }
-    );
-    if (!createNewCompany) {
-      res.status(400).send("Error on create company");
-    }
-
-    res.status(201).send(createNewCompany);
-  } catch (e) {
-    res.status(500).send(`Error ${e}`);
-  }
-};
+import { sendMailer } from "../../../../core/shared/mailer";
+import { validateMagicLink } from "../../../../core/company/usecases/validateMagicLink";
+import { updateCompanyByEmail } from "../../../../core/company/usecases/updateCompanyByEmail";
 
 export const LoginCompanyController = async (req: Request, res: Response) => {
   try {
-    const company = await LoginCompany(
-      {
-        email: req.body.email,
-        password: req.body.password,
-      },
+    let company = await searchCompanyByEmail(
+      req.body.email,
       PrismaAdapter.default
     );
+
+    if (!company) {
+      company = await registerCompany(PrismaAdapter.default, {
+        ...req.body,
+      });
+    }
 
     const jwt = sign(
       {
@@ -50,11 +34,30 @@ export const LoginCompanyController = async (req: Request, res: Response) => {
           id: company.id,
         },
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "3h",
+      }
     );
-    res.cookie("jwt", jwt);
-    res.status(200).json({
+
+    const date = new Date(Date.now() + 3 * 60 * 60 * 1000);
+
+    await updateCompanyByEmail(
+      req.body.email,
       jwt,
+      date,
+      PrismaAdapter.default
+    );
+
+    await sendMailer(
+      req.body.email,
+      "Login to the app",
+      `<span>Login using this  <a href='http://localhost:5000/v1/company/magic-link?token=${jwt}'>link</a></span>`
+    );
+    res.status(200).json({
+      data: {
+        emailSend: true,
+      },
     });
   } catch (e: any) {
     const errorMessage = e as ErrorMessage<string>;
@@ -92,26 +95,51 @@ export const loginCompanyWithGoogleRedirect = async (
       }
     );
 
-    const findCompany = await searchCompanyByEmail(
+    let findCompany = await searchCompanyByEmail(
       profile.email,
       PrismaAdapter.default
     );
 
     if (!findCompany) {
-      await registerGoogleCompany(
+      findCompany = await registerGoogleCompany(
         {
           email: profile.email!,
-          info: null,
+          info: {
+            companyName: `${profile.name}`,
+            image: profile.picture,
+          },
           location: {},
           tenantId: null,
           platform: "JOBLISTING",
           registeredBy: "GOOGLE",
+          loginToken: "",
+          loginTokenExpired: new Date(),
         },
         PrismaAdapter.default
       );
     }
 
+    const jwt = sign(
+      {
+        data: {
+          email: findCompany.email,
+          id: findCompany.id,
+        },
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "3h",
+      }
+    );
+
     console.log(profile);
+    const date = new Date(Date.now() + 3 * 60 * 60 * 1000);
+    await updateCompanyByEmail(
+      findCompany.email,
+      jwt,
+      date,
+      PrismaAdapter.default
+    );
 
     res.redirect("/");
   } catch (error: any) {
@@ -172,5 +200,26 @@ export const listCompaniesController = async (req: Request, res: Response) => {
   } catch (e: any) {
     const errorMessage = e as ErrorMessage<string>;
     res.status(405).send(`Error fetching companies: ${errorMessage}`);
+  }
+};
+
+export const validateMagicLinkController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const company = await validateMagicLink(
+      req.query.token as string,
+      PrismaAdapter.default
+    );
+    if (!company) res.status(404).send("Not found magic link user");
+
+    res.cookie("jwt", company?.loginToken);
+    res.status(200).json({
+      data: company,
+    });
+  } catch (e: any) {
+    const errorMessage = e as ErrorMessage<string>;
+    res.status(404).send(`Error for magic link ${errorMessage.message}`);
   }
 };
